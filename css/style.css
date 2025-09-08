@@ -92,7 +92,7 @@ header nav ul li a {
 
 .banner .portfolio-slide.active {
     opacity: 1;
-    z-index: 10;
+    z-index: 1;
 }
 
 .banner .slide-overlay {
@@ -451,6 +451,7 @@ header nav ul li a {
     text-transform: uppercase;
 }
 .service .service-item{
+    min-height: 80vh;
     background-color: var(--bg);
     padding: 100px 30px !important;
     transition-duration: 0.5s;
