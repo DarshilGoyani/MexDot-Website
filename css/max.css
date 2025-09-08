@@ -1,0 +1,132 @@
+/* responsive.css - tailored to the uploaded project */
+/* Keeps original layout intact; only applies stacking/scaling at breakpoints */
+
+/* Basic fluid media */
+img, video, svg, canvas { max-width:100%; height:auto; display:block; }
+iframe { max-width:100%; }
+
+/* Box-sizing safety */
+* { box-sizing: border-box; }
+
+/* Header / logo adjustments */
+.header-wrapper, .header { padding-left:20px; padding-right:20px; }
+.logo-wrap img { max-height:56px; width:auto; display:block; }
+
+/* Nav: horizontal on large, off-canvas on <=992px */
+.nav-menu { display:flex; gap:22px; align-items:center; }
+.nav-menu .nav-item a { white-space:nowrap; }
+
+/* show a toggle element only styling (if present) */
+.nav-toggle { display:none; background:transparent; border:0; font-size:22px; color:inherit; cursor:pointer; }
+
+/* Hero / Banner layout */
+.banner .main-content, .hero .main-content { display:flex; gap:30px; align-items:center; justify-content:space-between; }
+.banner .hero-left, .banner .hero-right, .banner .main-content > div { flex:1 1 50%; }
+
+/* About / text-image safe grid */
+.about .main-content, .text-image, .image-text { display:grid; grid-template-columns: 1fr 1fr; gap:30px; align-items:center; }
+.about .about-img-wrapper-cnt img, .image-text img { width:100%; height:auto; border-radius:10px; object-fit:cover; }
+
+/* Services grid */
+.service, .service2-wrapper { display:grid; grid-template-columns: repeat(3, 1fr); gap:22px; }
+.service-item { min-height:160px; }
+
+/* Portfolio / split slides */
+.portfolio-slide { display:grid; grid-template-columns: 1fr 1fr; gap:20px; align-items:stretch; }
+.portfolio-slide img { width:100%; height:100%; object-fit:cover; border-radius:12px; }
+
+/* Team */
+.team { display:grid; grid-template-columns: repeat(3,1fr); gap:20px; }
+
+/* Contact */
+.contact { display:grid; grid-template-columns: 1fr 1fr; gap:28px; }
+
+/* Footer */
+.footer { text-align:center; padding:30px 20px; }
+
+/* Buttons */
+button, .btn, .view-project-btn, .gooey-btn { padding:10px 16px; border-radius:10px; }
+
+/* Typography scaling (gentle) */
+h1 { font-size: clamp(28px, 6vw, 64px); line-height:1.08; }
+h2 { font-size: clamp(22px, 4.2vw, 40px); line-height:1.15; }
+
+/* Prevent layout-breaking absolute elements from overflowing screens */
+[style*="position: absolute"] { max-width: 100%; left: auto; right: auto; }
+
+/* Accessibility: wrap long content */
+pre, code { white-space: pre-wrap; word-break: break-word; }
+
+/* ------------------- BREAKPOINTS ------------------- */
+
+/* <= 1200px */
+@media (max-width: 1200px) {
+  .service { grid-template-columns: repeat(2, 1fr); }
+  .team { grid-template-columns: repeat(2,1fr); }
+  .logo-wrap img { max-height:52px; }
+}
+
+/* <= 992px  — tablet / small laptop */
+@media (max-width: 992px) {
+  /* Header */
+  .header-wrapper { padding-left:12px; padding-right:12px; }
+
+  /* Off-canvas nav panel */
+  .nav-menu {
+    position: fixed;
+    right: -100%;
+    top: 0;
+    height: 100vh;
+    width: 78%;
+    background: var(--bg, #0f0f0f);
+    flex-direction: column;
+    padding: 90px 20px;
+    gap:18px;
+    transition: right .28s ease;
+    z-index:1200;
+  }
+  .nav-menu.open { right: 0; }
+
+  .nav-toggle { display:block; position:relative; z-index:1300; }
+
+  /* Banner stacks */
+  .banner .main-content, .hero .main-content { flex-direction:column; text-align:center; gap:20px; }
+  .banner .hero-left, .banner .hero-right { width:100%; }
+
+  /* About / image stacks */
+  .about .main-content, .text-image, .image-text { grid-template-columns:1fr; text-align:center; }
+
+  /* Portfolio -> stacked single column */
+  .portfolio-slide { grid-template-columns: 1fr; }
+  .portfolio-slide .view-project-btn { margin-top:14px; }
+
+  /* Contact stacks */
+  .contact { grid-template-columns: 1fr; }
+  .contact form { order: 2; }
+
+  /* Buttons touch-friendly */
+  button, .btn, .view-project-btn, .gooey-btn { padding:12px 18px; }
+
+  /* tighten font mildly */
+  h1 { font-size: clamp(26px, 6.2vw, 48px); }
+}
+
+/* <= 768px  — mobile large / portrait tablets */
+@media (max-width: 768px) {
+  .service { grid-template-columns: 1fr; gap:18px; }
+  .team { grid-template-columns: 1fr; }
+  .banner .project-title, .banner h1 { font-size: clamp(22px, 7vw, 40px); }
+  .footer { padding: 22px 12px; }
+  .logo-wrap img { max-height:46px; }
+}
+
+/* <= 576px  — small phones */
+@media (max-width: 576px) {
+  body { font-size:14px; }
+  button, .btn, .view-project-btn, .gooey-btn { width:100%; display:block; }
+  .banner .main-content, .hero .main-content { gap:14px; padding-left:12px; padding-right:12px; }
+  h1 { font-size:28px; }
+  h2 { font-size:20px; }
+  .nav-menu { width: 90%; }
+  .logo-wrap img { max-height:40px; }
+}
