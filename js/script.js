@@ -179,17 +179,21 @@ gsap.registerPlugin(ScrollTrigger);
 
 let sections = gsap.utils.toArray(".service2-item");
 
-gsap.to(sections, {
-  xPercent: -100 * (sections.length - 2),
-  ease: "none",
-  scrollTrigger: {
-    trigger: ".service2-outer",
-    pin: true,
-    scrub: 1,
-    snap: 1 / (sections.length - 1),
-    end: () => "+=" + document.querySelector(".service2-outer").offsetWidth
-  }
-});
+// Only apply horizontal scroll pinning on desktop (>991px)
+if (window.innerWidth > 991) {
+    gsap.to(sections, {
+        xPercent: -100 * (sections.length - 2),
+        ease: "none",
+        scrollTrigger: {
+            trigger: ".service2-outer",
+            pin: true,
+            scrub: 1,
+            snap: 1 / (sections.length - 1),
+            end: () => "+=" + document.querySelector(".service2-outer").offsetWidth
+        }
+    });
+}
+
 
 // testimonial carousel
 $('.owl-carousel').owlCarousel({
@@ -209,32 +213,54 @@ $('.owl-carousel').owlCarousel({
     }
 })
 
-// for responsev toggle
-// Minimal nav toggle — safe, non-destructive
-// (function(){
-//   const nav = document.querySelector('.nav-menu');
-//   // prefer an existing toggle element if present
-//   let toggle = document.querySelector('.nav-toggle');
-//   if(!toggle){
-//     // create minimal toggle button (icon-free, you can style it)
-//     toggle = document.createElement('button');
-//     toggle.className = 'nav-toggle';
-//     toggle.setAttribute('aria-label','Open navigation');
-//     toggle.innerHTML = '&#9776;'; // simple hamburger char
-//     const header = document.querySelector('.header-wrapper') || document.querySelector('header');
-//     if(header) header.insertBefore(toggle, header.firstChild);
-//   }
-//   toggle.addEventListener('click', ()=> {
-//     if(!nav) return;
-//     nav.classList.toggle('open');
-//     toggle.classList.toggle('is-active');
-//   });
+// ============================================================
+// Mobile Navigation Toggle
+// ============================================================
+document.addEventListener('DOMContentLoaded', function () {
+    const navToggle = document.getElementById('navToggle');
+    const mobileMenu = document.getElementById('mobileMenu');
 
-//   // close nav when clicking outside or on navigation link (mobile)
-//   document.addEventListener('click', (e)=>{
-//     if(!nav || !nav.classList.contains('open')) return;
-//     if(e.target.closest('.nav-menu') || e.target === toggle) return;
-//     nav.classList.remove('open');
-//     toggle.classList.remove('is-active');
-//   });
-// })();
+    if (navToggle && mobileMenu) {
+        navToggle.addEventListener('click', function (e) {
+            e.stopPropagation();
+            mobileMenu.classList.toggle('open');
+            // Animate hamburger lines to X
+            const spans = navToggle.querySelectorAll('span');
+            navToggle.classList.toggle('active');
+            if (navToggle.classList.contains('active')) {
+                spans[0].style.transform = 'rotate(45deg) translate(4px, 4px)';
+                spans[1].style.opacity = '0';
+                spans[2].style.transform = 'rotate(-45deg) translate(4px, -4px)';
+            } else {
+                spans[0].style.transform = '';
+                spans[1].style.opacity = '';
+                spans[2].style.transform = '';
+            }
+        });
+
+        // Close when clicking a link
+        mobileMenu.querySelectorAll('a').forEach(function (link) {
+            link.addEventListener('click', function () {
+                mobileMenu.classList.remove('open');
+                navToggle.classList.remove('active');
+                navToggle.querySelectorAll('span').forEach(function (s) {
+                    s.style.transform = '';
+                    s.style.opacity = '';
+                });
+            });
+        });
+
+        // Close on outside click
+        document.addEventListener('click', function (e) {
+            if (!navToggle.contains(e.target) && !mobileMenu.contains(e.target)) {
+                mobileMenu.classList.remove('open');
+                navToggle.classList.remove('active');
+                navToggle.querySelectorAll('span').forEach(function (s) {
+                    s.style.transform = '';
+                    s.style.opacity = '';
+                });
+            }
+        });
+    }
+});
+
